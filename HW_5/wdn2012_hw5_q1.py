@@ -26,6 +26,7 @@ def eval_postfix(lst):
 # print(eval_postfix([]))
 
 def postfix_calculator():
+    vars = {}
     str = input("-->")
     while str != "done()":
         name = None
@@ -36,14 +37,14 @@ def postfix_calculator():
         else:
             lst = all
         for i in range(len(lst)): # replace globals
-            if not lst[i].isdigit() and lst[i] not in operators and globals()[lst[i]]:
-                lst[i] = globals()[lst[i]]
+            if not lst[i].isdigit() and lst[i] not in operators and vars[lst[i]]:
+                lst[i] = vars[lst[i]]
         a = eval_postfix(lst)
         if name:
-            globals()[name] = a
+            vars[name] = a
             print(name)
         else:
             print(a)
         str = input("-->")
         
-postfix_calculator()
+# postfix_calculator()
