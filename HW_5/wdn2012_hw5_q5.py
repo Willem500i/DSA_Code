@@ -4,6 +4,8 @@ from ArrayQueue import *
 def permutations(lst):
     stack = ArrayStack() # stores elements still to be used
     queue = ArrayQueue() # stores already created permutations
+    if len(lst) == 0:
+        return []
 
     for elem in lst:
         stack.push(elem)
@@ -23,4 +25,4 @@ def permutations(lst):
     return [queue.dequeue() for i in range(len(queue))]
 
 
-# print(permutations([1,2,3]))
+# print(permutations([1,2]))

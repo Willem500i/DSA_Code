@@ -30,6 +30,8 @@ class MaxStack():
             self.maximum = a[1]
         return a[0]
     def max(self):
+        if self.is_empty():
+            raise Exception("Stack is Empty")
         return self.maximum
     
 # maxS = MaxStack()

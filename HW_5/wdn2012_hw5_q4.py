@@ -1,6 +1,6 @@
 from ArrayStack import *
 
-class ArrayQueue():
+class Queue():
     def __init__(self):
         self.stack1 = ArrayStack()
         self.stack2 = ArrayStack()
@@ -24,7 +24,7 @@ class ArrayQueue():
             raise Exception("Queue is empty")
         return self.stack1.top()
 
-# a =ArrayQueue()
+# a =Queue()
 # a.enqueue(1)
 # a.enqueue(2)
 # a.enqueue(3)

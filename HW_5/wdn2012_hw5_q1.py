@@ -27,7 +27,7 @@ def eval_postfix(lst):
 
 def postfix_calculator():
     vars = {}
-    str = input("-->")
+    str = input("--> ")
     while str != "done()":
         name = None
         all = str.split( )
@@ -45,6 +45,6 @@ def postfix_calculator():
             print(name)
         else:
             print(a)
-        str = input("-->")
+        str = input("--> ")
         
-# postfix_calculator()
+postfix_calculator()
