@@ -26,7 +26,11 @@ class MidStack():
     def top(self):
         if self.is_empty():
             raise Exception("Stack is empty")
-        return self.right.last()
+        if self.left:
+            a = self.right.last()
+        else:
+            a = self.left.top()
+        return a
     def mid_push(self, e):
         self.left.push(e)
         if len(self.left) > len(self.right)+1:
