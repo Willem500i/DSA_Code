@@ -27,12 +27,10 @@ class Integer():
             if end2.data:
                 p2 = int(end2.data)
 
-            tot = p1 + p2 + carryover # add elems, with any previous carryover
-            if tot >= 10: # if sum greater than ten, take 10 and add one to prev carryover
-                tot -= 10
-                carryover = 1
-            else:
-                carryover = 0
+            all = p1 + p2 + carryover # add elems, with any previous carryover
+            tot = all % 10
+            carryover = all // 10
+
             ret = str(tot) + ret
             if end1.data:
                 end1 = end1.prev
@@ -47,35 +45,12 @@ class Integer():
     def __mul__(self, other):
         ''' Creates and returns an Integer object that 
         represent the multiplication of self and other, also of type Integer'''
+
         out = Integer('0')
 
-        # get last elem of both
         end1 = self.data.trailer.prev
         tens = 0
         carryover = 0
-        '''
-        560 *
-        230
-        = 128800
-
-        0 * 0 = 0
-        0 * 3 = 0
-        0 * 2 = 0
-        out = 0 + 0 = 0
-
-        6 * 0 = 0
-        6 * 3 = 8 + carryover
-        6 * 2 + 1 = 3 + carryover
-        1380 + 0 = 13800
-
-        5 * 0 = 0
-        5 * 3 = 5 + carryover
-        5 * 2 + 1 = 1 + carryover
-        1150 + 00 = 115000 
-
-        13800 + 115000 = 128800
-        '''
-
 
         while end1.data:
             ret = '0' * tens # adjust for bigger values each iteration
@@ -84,13 +59,13 @@ class Integer():
                 tot = int(end1.data) * int(end2.data) + carryover
                 carryover = 0
 
-                if tot >= 10:
-                    carryover = tot // 10
-                    tot %= 10
+                carryover = tot // 10
+                tot %= 10
+
+                print(tot)
 
                 ret = str(tot) + ret
                 end2 = end2.prev
-
 
             if carryover > 0:
                 ret = str(carryover) + ret
@@ -102,6 +77,8 @@ class Integer():
             tens += 1
             carryover = 0
 
+            print(out)
+
         return out
 
     def __repr__(self):
@@ -109,14 +86,14 @@ class Integer():
         ret = ''
         curr = self.data.header.next
         while curr.data:
-            ret = ret + curr.data
+            ret += curr.data
             curr = curr.next
 
         return ret
-
+    
+# '''
 # testing
-'''
-nums = (23348389,2493)
+nums = (12345,6789)
 n1 = Integer(str(nums[0]))
 n2 = Integer(str(nums[1]))
 n3 = n1 * n2
@@ -127,4 +104,4 @@ n4 = n1 + n2
 print("Addition:")
 print(f"Expected: {nums[0]} + {nums[1]} = {nums[0]+nums[1]}")
 print(f"Realityy: {n1} + {n2} = {n4}")
-'''
+# '''

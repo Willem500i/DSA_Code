@@ -17,15 +17,15 @@ class LinkedQueue:
     def first(self):
         if (self.is_empty()):
             raise Exception("Queue is empty")
-        a = self.data.delete_first()
-        self.data.add_first(a)
-        return a
+        return self.data.header.next.data
     
-# a = Queue()
-# a.enqueue(1)
-# a.enqueue(2)
-# a.enqueue(3)
-# print(a.first())
-# print(a.dequeue())
-# print(a.dequeue())
-# print(a.dequeue())
+'''
+a = LinkedQueue()
+a.enqueue(1)
+a.enqueue(2)
+a.enqueue(3)
+print(a.first())
+print(a.dequeue())
+print(a.dequeue())
+print(a.dequeue())
+'''
