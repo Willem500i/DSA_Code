@@ -13,7 +13,7 @@ class Integer():
     def __add__(self, other):
         ''' Creates and returns an Integer object that represent 
         the sum of self and other, also of type Integer'''
-        ret = ''
+        out = Integer('')
 
         # get last elem of both
         end1 = self.data.trailer.prev
@@ -31,16 +31,17 @@ class Integer():
             tot = all % 10
             carryover = all // 10
 
-            ret = str(tot) + ret
+            out.data.add_first(str(tot))
+
             if end1.data:
                 end1 = end1.prev
             if end2.data:
                 end2 = end2.prev
 
         if carryover > 0:
-            ret = '1' + ret
+            out.data.add_first('1')
 
-        return Integer(ret)
+        return out
     
     def __mul__(self, other):
         ''' Creates and returns an Integer object that 
@@ -53,7 +54,10 @@ class Integer():
         carryover = 0
 
         while end1.data:
-            ret = '0' * tens # adjust for bigger values each iteration
+            ret = Integer('')
+            for i in range(tens):
+                ret.data.add_first('0')
+
             end2 = other.data.trailer.prev
             while end2.data:
                 tot = int(end1.data) * int(end2.data) + carryover
@@ -62,22 +66,19 @@ class Integer():
                 carryover = tot // 10
                 tot %= 10
 
-                print(tot)
+                ret.data.add_first(str(tot))
 
-                ret = str(tot) + ret
                 end2 = end2.prev
 
             if carryover > 0:
-                ret = str(carryover) + ret
+                ret.data.add_first(str(carryover))
 
-            if ret != '': # dont add blank int
-                out += Integer(ret)
+            if ret.data.header.next.data != '0':
+                out += ret
 
             end1 = end1.prev
             tens += 1
             carryover = 0
-
-            print(out)
 
         return out
 
@@ -91,9 +92,9 @@ class Integer():
 
         return ret
     
-# '''
+'''
 # testing
-nums = (12345,6789)
+nums = (124243345,367332289)
 n1 = Integer(str(nums[0]))
 n2 = Integer(str(nums[1]))
 n3 = n1 * n2
@@ -104,4 +105,4 @@ n4 = n1 + n2
 print("Addition:")
 print(f"Expected: {nums[0]} + {nums[1]} = {nums[0]+nums[1]}")
 print(f"Realityy: {n1} + {n2} = {n4}")
-# '''
+'''
