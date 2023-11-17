@@ -5,7 +5,7 @@ class CompactString:
         ''' Initializes a CompactString object representing the string given in orig_str'''
         self.data = DoublyLinkedList()
         if len(orig_str) == 0:
-            self.data.add_last(('',1))
+            self.data.add_last(('',0))
             return
         count = 0
         curr = orig_str[0]
