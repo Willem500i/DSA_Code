@@ -115,16 +115,16 @@ def invert_bt(root): # WIP
     q.enqueue(root)
     while q:
         curr = q.dequeue()
-        if curr.right:
-            q.enqueue(curr.right)
-        if curr.left:
-            q.enqueue(curr.left)
-        
-        
+        left = curr.left
+        right = curr.right
 
+        curr.left = right
+        curr.right = left
 
-
-    
+        if right is not None:
+            q.enqueue(right)
+        if left is not None:
+            q.enqueue(left)
 
 
        
