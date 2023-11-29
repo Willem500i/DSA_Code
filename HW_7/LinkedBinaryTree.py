@@ -1,7 +1,6 @@
 from ArrayQueue import ArrayQueue
 
 class LinkedBinaryTree:
-
     class Node:
         def __init__(self, data, left=None, right=None):
             self.data = data
@@ -118,5 +117,53 @@ class LinkedBinaryTree:
     def __iter__(self):
         for node in self.breadth_first():
             yield node.data
+    # 2
+    def leaves_list(self):
+        if (self.is_empty()):
+            return []
+        def leaves_generator(root):
+            if (root.left is None and root.right is None):
+                yield root.data
+            if root.left:
+                yield from leaves_generator(root.left)
+            if root.right:
+                yield from leaves_generator(root.right)
 
+        return list(leaves_generator(self.root))
+    # 4
+    def iterative_inorder(self):
+        # left, root, right
+        curr = self.root
+        if curr is None:
+            raise Exception("Tree is empty")
+        while curr: # get to bottom left
+            if not curr.left:
+                yield curr.data
+                curr = curr.right
+            else:
+                prev = curr.left
+                while prev.right and prev.right != curr:
+                    prev = prev.right
+                if not prev.right:
+                    prev.right = curr
+                    curr = curr.left
+                else:
+                    prev.right = None
+                    yield curr.data
+                    curr = curr.right
 
+#         100
+#       /    \
+#      2      3
+#     / \    / \
+#    4   10  0   7
+#               / \
+#               2  5
+#                  /\
+#                 1  2
+
+# t = LinkedBinaryTree()
+# a = LinkedBinaryTree.Node(100, LinkedBinaryTree.Node(2,LinkedBinaryTree.Node(4),LinkedBinaryTree.Node(10)),LinkedBinaryTree.Node(3,LinkedBinaryTree.Node(0),LinkedBinaryTree.Node(7,LinkedBinaryTree.Node(2),LinkedBinaryTree.Node(5,LinkedBinaryTree.Node(1),LinkedBinaryTree.Node(2)))))
+# t.root = a
+# for item in t.iterative_inorder():
+#     print(item, end=' ')
