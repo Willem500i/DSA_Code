@@ -109,7 +109,7 @@ def invert_bt(root):
             root.right = new_right
             return root
 
-def invert_bt(root): # WIP
+def invert_bt(root):
     ''' Inverts the binary tree without recursion '''
     q = ArrayQueue()
     q.enqueue(root)
