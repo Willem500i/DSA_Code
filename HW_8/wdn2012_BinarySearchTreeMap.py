@@ -12,6 +12,8 @@ class BinarySearchTreeMap:
             self.left = None
             self.right = None
 
+            self.height = 0
+
         def num_children(self):
             count = 0
             if(self.left is not None):
@@ -25,6 +27,8 @@ class BinarySearchTreeMap:
             self.parent = None
             self.left = None
             self.right = None
+
+            self.height = 0
 
 
     def __init__(self):
@@ -88,6 +92,11 @@ class BinarySearchTreeMap:
             else:
                 parent.right = new_node
             new_node.parent = parent
+
+            cursor = new_node.parent
+            while cursor:
+                cursor.height = cursor.height + 1
+                cursor = cursor.parent
             self.n += 1
 
 
@@ -103,6 +112,7 @@ class BinarySearchTreeMap:
     def delete_node(self, node_to_delete):
         item = node_to_delete.item
         num_children = node_to_delete.num_children()
+        curr = node_to_delete.parent
 
         if(node_to_delete is self.root):
             if (num_children == 0):
@@ -138,7 +148,7 @@ class BinarySearchTreeMap:
             elif(num_children == 1):
                 parent = node_to_delete.parent
                 if(node_to_delete.left is not None):
-                    child = node_to_delete.left
+                    child = node_to_delete.left 
                 else:
                     child = node_to_delete.right
 
@@ -155,6 +165,11 @@ class BinarySearchTreeMap:
                 max_in_left = self.subtree_max(node_to_delete.left)
                 node_to_delete.item = max_in_left.item
                 self.delete_node(max_in_left)
+                node_to_delete.height -= 1
+
+        while curr:
+            curr.height -= 1
+            curr = curr.parent
 
         return item
 
@@ -179,3 +194,48 @@ class BinarySearchTreeMap:
     def __iter__(self):
         for node in self.inorder():
             yield node.item.key
+    # 5
+    def get_ith_smallest(self, i):
+        if i > len(self):
+            raise Exception(f"Index {i} out of range")
+        def ith_smallest_helper(root, i):
+            if root.left is None and root.right is None: # no children
+                return root.item.key
+            if root.left is None: # no left node
+                if i == 1: return root.item.key # return root
+                return ith_smallest_helper(root.right,i-1) # return recursion on right side
+            # if i == 6: print(f"root.left.height is {root.height}")
+            if i <= (root.left.height + 1):
+                return ith_smallest_helper(root.left,i)
+            elif i == root.left.height + 2:
+                return root.item.key
+            else:
+                return ith_smallest_helper(root.right, i - root.left.height - 2)
+
+        return ith_smallest_helper(self.root, i)
+        
+
+
+# bst = BinarySearchTreeMap()
+# bst[7] = None
+# bst[5] = None
+# bst[1] = None
+# bst[14] = None
+# bst[10] = None
+# bst[3] = None
+# bst[9] = None
+# bst[13] = None
+# bst[64] = None
+# print([x for x in bst])
+# # print([bst.get_ith_smallest(x) for x in range(1,len(bst)+1)])
+# print(bst.get_ith_smallest(3)) # 5
+# print(bst.get_ith_smallest(6)) # 10
+# # print(bst.root.height)
+# del bst[14]
+# # print(bst.root.left.right.item.key)
+# del bst[5]
+# # print(bst.root.left.right.item.key)
+# print([x for x in bst])
+# print([bst.get_ith_smallest(x) for x in range(1,len(bst)+1)])
+# print(bst.get_ith_smallest(3)) # 7
+# print(bst.get_ith_smallest(6)) # 13

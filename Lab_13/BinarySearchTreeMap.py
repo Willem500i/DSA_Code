@@ -246,15 +246,15 @@ def is_BST(root):
     return is_BST_helper(root)[2]
 
 def is_BST_helper(root):
-    ''' Returns a tuple (min, max, bool)'''
+    ''' Returns a tuple (min, max, is_bst)'''
     if root.left: left = is_BST_helper(root.left)
     if root.right: right = is_BST_helper(root.right)
 
     if (root.left and root.right):
         return (left[0].item.key,right[1].item.key,(left[2] and right[2] and (left[1].item.key < right[0].item.key)))
     elif root.left: # and not root.right
-        return (left[0], root.item.data, left[2])
+        return (left[0], root.item.key, left[2])
     else: # if root.right
-        return (root.item.data, right[1], right[2])
+        return (root.item.key, right[1], right[2])
 
 
