@@ -204,7 +204,6 @@ class BinarySearchTreeMap:
             if root.left is None: # no left node
                 if i == 1: return root.item.key # return root
                 return ith_smallest_helper(root.right,i-1) # return recursion on right side
-            # if i == 6: print(f"root.left.height is {root.height}")
             if i <= (root.left.height + 1):
                 return ith_smallest_helper(root.left,i)
             elif i == root.left.height + 2:
