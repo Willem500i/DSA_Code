@@ -1,12 +1,11 @@
 import random
-from UnsortedArrayMap import UnsortedArrayMap
+from DoublyLinkedList import DoublyLinkedList
 
 import ctypes  # provides low-level arrays
 def make_array(n):
     return (n * ctypes.py_object)()
 
-
-class ChainingHashTableMap:
+class ChainingHashTableSet:
 
     class MADHashFunction:
         def __init__(self, N, p=40206835204840513073):
@@ -18,14 +17,12 @@ class ChainingHashTableMap:
         def __call__(self, key):
             return ((self.a * hash(key) + self.b) % self.p) % self.N
 
-
-
     def __init__(self, N=64):
         self.table = make_array(N)
         for i in range(N):
-            self.table[i] = UnsortedArrayMap()
+            self.table[i] = DoublyLinkedList()
         self.n = 0
-        self.h = ChainingHashTableMap.MADHashFunction(N)
+        self.h = ChainingHashTableSet.MADHashFunction(N)
 
 
     def __len__(self):
@@ -34,26 +31,28 @@ class ChainingHashTableMap:
     def is_empty(self):
         return (len(self) == 0)
 
-    def __getitem__(self, key):
-        i = self.h(key)
-        curr_bucket = self.table[i]
-        return curr_bucket[key]
-
-    def __setitem__(self, key, value):
+    def add(self, key):
         i = self.h(key)
         curr_bucket = self.table[i]
         old_size = len(curr_bucket)
-        curr_bucket[key] = value
+        curr_bucket.add_last(key)
+
         new_size = len(curr_bucket)
         if (new_size > old_size):
             self.n += 1
         if (self.n > len(self.table)):
             self.rehash(2 * len(self.table))
 
-    def __delitem__(self, key):
+    def remove(self, key):
         i = self.h(key)
         curr_bucket = self.table[i]
-        del curr_bucket[key]
+        curr = curr_bucket.header
+        running = True
+        while curr is not curr_bucket.trailer and running:
+            if curr.data == key:
+                curr_bucket.delete_node(curr)
+                running = False
+            curr = curr.next
         self.n -= 1
         if (self.n < len(self.table) // 4):
             self.rehash(len(self.table) // 2)
@@ -67,11 +66,14 @@ class ChainingHashTableMap:
 
     def __iter__(self):
         for curr_bucket in self.table:
-            for key in curr_bucket:
-                yield key
+            yield from curr_bucket
 
     def rehash(self, new_size):
-        old = [(key, self[key]) for key in self]
+        old = [key for key in self]
         self.__init__(new_size)
-        for (key, val) in old:
-            self[key] = val
+        for (key) in old:
+            self.add(key)
+
+
+def print_hash_table(hset):
+    for item in hset: print(item)
